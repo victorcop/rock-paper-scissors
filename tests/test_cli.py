@@ -1,11 +1,11 @@
 """Tests for the command-line interface."""
 
-import unittest
-from unittest.mock import patch
-from io import StringIO
 import sys
+import unittest
+from io import StringIO
+from unittest.mock import patch
 
-from rock_paper_scissors.__main__ import parse_args, main, setup_logging
+from rock_paper_scissors.__main__ import main, parse_args, setup_logging
 
 
 class TestParseArgs(unittest.TestCase):

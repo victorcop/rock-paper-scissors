@@ -5,7 +5,8 @@ import logging
 import sys
 from typing import Optional
 
-from rock_paper_scissors.rock_paper_scissors import play_game, play_multiple_rounds
+from rock_paper_scissors.rock_paper_scissors import (play_game,
+                                                     play_multiple_rounds)
 
 
 def setup_logging(verbose: bool, debug: bool) -> None:
