@@ -1,13 +1,15 @@
 import unittest
 from unittest.mock import call, patch
 
-from rock_paper_scissors.rock_paper_scissors import (VALID_CHOICES,
-                                                     WIN_CONDITIONS,
-                                                     determine_winner,
-                                                     get_computer_choice,
-                                                     get_user_choice,
-                                                     play_game,
-                                                     play_multiple_rounds)
+from rock_paper_scissors.rock_paper_scissors import (
+    VALID_CHOICES,
+    WIN_CONDITIONS,
+    determine_winner,
+    get_computer_choice,
+    get_user_choice,
+    play_game,
+    play_multiple_rounds,
+)
 
 
 class TestGetComputerChoice(unittest.TestCase):

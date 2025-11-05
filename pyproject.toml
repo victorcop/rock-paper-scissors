@@ -59,3 +59,7 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=html",
 ]
+
+[tool.isort]
+profile = "black"
+line_length = 88
