@@ -1,5 +1,10 @@
 # Rock Paper Scissors
 
+[![CI Tests](https://github.com/victorcop/rock-paper-scissors/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/victorcop/rock-paper-scissors/actions/workflows/ci.yml)
+[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![GitHub](https://img.shields.io/github/stars/victorcop/rock-paper-scissors?style=social)](https://github.com/victorcop/rock-paper-scissors)
+
 A simple command-line Rock, Paper, Scissors game implemented in Python.
 
 ## Description
