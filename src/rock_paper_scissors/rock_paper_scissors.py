@@ -2,7 +2,10 @@
 
 import logging
 import random
+import sys
 from typing import Dict, List, Literal, Tuple
+
+import questionary
 
 # Type alias for valid choices
 Choice = Literal["rock", "paper", "scissors"]
@@ -31,16 +34,50 @@ def get_computer_choice() -> Choice:
     return choice  # type: ignore
 
 
-def get_user_choice(prompt: bool = True) -> Choice:
+def get_user_choice(prompt: bool = True, interactive: bool = True) -> Choice:
     """
     Get the user's choice of 'rock', 'paper', or 'scissors'.
 
     Args:
         prompt: Whether to display the input prompt.
+        interactive: Whether to use interactive menu (Azure CLI style).
 
     Returns:
         Choice: The user's validated choice.
     """
+    # Check if we're in an interactive terminal (not piped input)
+    is_tty = sys.stdin.isatty()
+
+    # Use interactive menu if available and requested
+    if interactive and is_tty and prompt:
+        try:
+            choice = questionary.select(
+                "Select your choice:",
+                choices=[
+                    questionary.Choice("1. 🪨 Rock", value="rock"),
+                    questionary.Choice("2. 📄 Paper", value="paper"),
+                    questionary.Choice("3. ✂️  Scissors", value="scissors"),
+                ],
+                style=questionary.Style(
+                    [
+                        ("highlighted", "fg:cyan bold"),
+                        ("pointer", "fg:cyan bold"),
+                    ]
+                ),
+            ).ask()
+
+            if choice is None:  # User pressed Ctrl+C
+                raise KeyboardInterrupt
+
+            logger.debug(f"User selected: {choice}")
+            return choice  # type: ignore
+        except (KeyboardInterrupt, EOFError):
+            raise
+        except Exception as e:
+            logger.warning(f"Interactive menu failed: {e}, falling back to text input")
+            # Fall through to text input
+
+    # Fallback to text input for non-interactive or piped input
     if prompt:
         user_input = (
             input("Enter your choice (rock, paper, scissors): ").strip().lower()

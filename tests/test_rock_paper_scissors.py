@@ -34,28 +34,32 @@ class TestGetComputerChoice(unittest.TestCase):
 class TestGetUserChoice(unittest.TestCase):
     """Test the get_user_choice function."""
 
+    @patch("sys.stdin.isatty", return_value=False)
     @patch("builtins.input", return_value="rock")
-    def test_valid_input_rock(self, mock_input):
+    def test_valid_input_rock(self, mock_input, mock_isatty):
         """Test that valid input 'rock' is accepted."""
         result = get_user_choice()
         self.assertEqual(result, "rock")
         mock_input.assert_called_once()
 
+    @patch("sys.stdin.isatty", return_value=False)
     @patch("builtins.input", return_value="paper")
-    def test_valid_input_paper(self, mock_input):
+    def test_valid_input_paper(self, mock_input, mock_isatty):
         """Test that valid input 'paper' is accepted."""
         result = get_user_choice()
         self.assertEqual(result, "paper")
 
+    @patch("sys.stdin.isatty", return_value=False)
     @patch("builtins.input", return_value="scissors")
-    def test_valid_input_scissors(self, mock_input):
+    def test_valid_input_scissors(self, mock_input, mock_isatty):
         """Test that valid input 'scissors' is accepted."""
         result = get_user_choice()
         self.assertEqual(result, "scissors")
 
+    @patch("sys.stdin.isatty", return_value=False)
     @patch("builtins.input", side_effect=["invalid", "  ROCK  "])
     @patch("builtins.print")
-    def test_invalid_input_retry(self, mock_print, mock_input):
+    def test_invalid_input_retry(self, mock_print, mock_input, mock_isatty):
         """Test that invalid input prompts for retry, and handles case-insensitive input."""
         result = get_user_choice()
         self.assertEqual(result, "rock")  # ROCK should be normalized to 'rock'
@@ -63,8 +67,9 @@ class TestGetUserChoice(unittest.TestCase):
         # Should print error message for invalid input
         self.assertGreater(mock_print.call_count, 0)
 
+    @patch("sys.stdin.isatty", return_value=False)
     @patch("builtins.input", return_value="  Paper  ")
-    def test_input_normalization(self, mock_input):
+    def test_input_normalization(self, mock_input, mock_isatty):
         """Test that input is normalized (trimmed and lowercased)."""
         result = get_user_choice()
         self.assertEqual(result, "paper")
