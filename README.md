@@ -16,11 +16,43 @@ This is a classic Rock, Paper, Scissors game where you play against the computer
 
 ## Installation
 
-### From Source
+### Option 1: Using venv and requirements.txt (Recommended)
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/rock-paper-scissors.git
+git clone https://github.com/victorcop/rock-paper-scissors.git
+cd rock-paper-scissors
+```
+
+2. Create and activate a virtual environment:
+
+**On Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**On macOS/Linux:**
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Install the package in editable mode:
+```bash
+pip install -e .
+```
+
+### Option 2: Direct Installation from Source
+
+1. Clone this repository:
+```bash
+git clone https://github.com/victorcop/rock-paper-scissors.git
 cd rock-paper-scissors
 ```
 
@@ -29,7 +61,7 @@ cd rock-paper-scissors
 pip install -e .
 ```
 
-### Using pip
+### Option 3: Using pip (when published)
 
 ```bash
 pip install rock-paper-scissors
@@ -89,16 +121,23 @@ rock-paper-scissors --debug
 ### How to Play
 
 1. Run the game using one of the commands above
-2. When prompted, enter your choice: `rock`, `paper`, or `scissors`
-   - Input is case-insensitive: `ROCK`, `Rock`, or `rock` all work
-   - Whitespace is automatically trimmed
+2. When prompted, select your choice:
+   - **Interactive Mode** (default): Use arrow keys to navigate and Enter to select from:
+     - 1. 🪨 Rock
+     - 2. 📄 Paper
+     - 3. ✂️  Scissors
+   - **Text Mode** (piped input): Type your choice: `rock`, `paper`, or `scissors`
+     - Input is case-insensitive: `ROCK`, `Rock`, or `rock` all work
+     - Whitespace is automatically trimmed
 3. The computer will make its choice
 4. The winner will be announced!
 5. If playing multiple rounds, scores are tracked and displayed after each round
 
 ### Features
 
+- ✅ **Interactive Menu**: Azure CLI-style menu with arrow key navigation and emojis
 - ✅ **Single or Multiple Rounds**: Play one round or multiple rounds with score tracking
+- ✅ **Smart Input Detection**: Automatically detects interactive terminal vs piped input
 - ✅ **Case-Insensitive Input**: Enter choices in any case (rock, ROCK, Rock)
 - ✅ **Input Validation**: Invalid inputs are caught with helpful error messages
 - ✅ **Score Tracking**: Keep track of wins, losses, and ties across multiple rounds
@@ -181,8 +220,8 @@ python -m src.rock_paper_scissors
 
 ## Requirements
 
-- Python 3.7 or higher
-- No runtime dependencies (uses only Python standard library)
+- Python 3.8 or higher
+- questionary >= 2.0.0 (for interactive menu)
 
 ### Development Requirements
 
