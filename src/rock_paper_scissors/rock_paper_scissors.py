@@ -3,12 +3,31 @@
 import logging
 import random
 import sys
+from enum import Enum
 from typing import Dict, List, Literal, Tuple
 
 import questionary
 
 # Type alias for valid choices
 Choice = Literal["rock", "paper", "scissors"]
+
+
+class GameResult(Enum):
+    """Enum representing the possible game results."""
+
+    USER_WIN = "user_win"
+    COMPUTER_WIN = "computer_win"
+    TIE = "tie"
+
+    def get_message(self) -> str:
+        """Get the display message for this result."""
+        messages = {
+            GameResult.USER_WIN: "You win!",
+            GameResult.COMPUTER_WIN: "You lose!",
+            GameResult.TIE: "It's a tie!",
+        }
+        return messages[self]
+
 
 # Game configuration
 VALID_CHOICES: List[str] = ["rock", "paper", "scissors"]
@@ -96,7 +115,7 @@ def get_user_choice(prompt: bool = True, interactive: bool = True) -> Choice:
     return user_input  # type: ignore
 
 
-def determine_winner(user_choice: Choice, computer_choice: Choice) -> str:
+def determine_winner(user_choice: Choice, computer_choice: Choice) -> GameResult:
     """
     Determine the winner of the game based on user and computer choices.
 
@@ -105,22 +124,22 @@ def determine_winner(user_choice: Choice, computer_choice: Choice) -> str:
         computer_choice: The computer's choice ('rock', 'paper', or 'scissors').
 
     Returns:
-        str: A string indicating the result: "You win!", "You lose!", or "It's a tie!"
+        GameResult: Enum indicating the result (USER_WIN, COMPUTER_WIN, or TIE).
     """
     logger.debug(f"Comparing: user={user_choice} vs computer={computer_choice}")
 
     if user_choice == computer_choice:
         logger.info("Game result: Tie")
-        return "It's a tie!"
+        return GameResult.TIE
     elif WIN_CONDITIONS[user_choice] == computer_choice:
         logger.info("Game result: User wins")
-        return "You win!"
+        return GameResult.USER_WIN
     else:
         logger.info("Game result: Computer wins")
-        return "You lose!"
+        return GameResult.COMPUTER_WIN
 
 
-def play_game(verbose: bool = False) -> Tuple[Choice, Choice, str]:
+def play_game(verbose: bool = False) -> Tuple[Choice, Choice, GameResult]:
     """
     Play a single game of Rock, Paper, Scissors.
 
@@ -128,7 +147,7 @@ def play_game(verbose: bool = False) -> Tuple[Choice, Choice, str]:
         verbose: Whether to print game information to console.
 
     Returns:
-        Tuple[Choice, Choice, str]: User choice, computer choice, and result message.
+        Tuple[Choice, Choice, GameResult]: User choice, computer choice, and result enum.
     """
     logger.info("Starting new game")
 
@@ -142,9 +161,9 @@ def play_game(verbose: bool = False) -> Tuple[Choice, Choice, str]:
         print(f"Computer chose: {computer_choice}")
 
     result = determine_winner(user_choice, computer_choice)
-    print(result)
+    print(result.get_message())
 
-    logger.info(f"Game completed: {user_choice} vs {computer_choice} -> {result}")
+    logger.info(f"Game completed: {user_choice} vs {computer_choice} -> {result.value}")
     return user_choice, computer_choice, result
 
 
@@ -173,12 +192,12 @@ def play_multiple_rounds(rounds: int, verbose: bool = False) -> Dict[str, int]:
 
         user_choice, computer_choice, result = play_game(verbose)
 
-        # Update score
-        if "win" in result.lower():
+        # Update score based on enum result
+        if result == GameResult.USER_WIN:
             score["user"] += 1
-        elif "lose" in result.lower():
+        elif result == GameResult.COMPUTER_WIN:
             score["computer"] += 1
-        else:
+        else:  # GameResult.TIE
             score["ties"] += 1
 
         # Show current score

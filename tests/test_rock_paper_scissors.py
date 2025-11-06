@@ -4,6 +4,7 @@ from unittest.mock import call, patch
 from rock_paper_scissors.rock_paper_scissors import (
     VALID_CHOICES,
     WIN_CONDITIONS,
+    GameResult,
     determine_winner,
     get_computer_choice,
     get_user_choice,
@@ -80,21 +81,21 @@ class TestDetermineWinner(unittest.TestCase):
 
     def test_tie_scenarios(self):
         """Test all tie scenarios."""
-        self.assertEqual(determine_winner("rock", "rock"), "It's a tie!")
-        self.assertEqual(determine_winner("paper", "paper"), "It's a tie!")
-        self.assertEqual(determine_winner("scissors", "scissors"), "It's a tie!")
+        self.assertEqual(determine_winner("rock", "rock"), GameResult.TIE)
+        self.assertEqual(determine_winner("paper", "paper"), GameResult.TIE)
+        self.assertEqual(determine_winner("scissors", "scissors"), GameResult.TIE)
 
     def test_user_wins_scenarios(self):
         """Test all scenarios where user wins."""
-        self.assertEqual(determine_winner("rock", "scissors"), "You win!")
-        self.assertEqual(determine_winner("paper", "rock"), "You win!")
-        self.assertEqual(determine_winner("scissors", "paper"), "You win!")
+        self.assertEqual(determine_winner("rock", "scissors"), GameResult.USER_WIN)
+        self.assertEqual(determine_winner("paper", "rock"), GameResult.USER_WIN)
+        self.assertEqual(determine_winner("scissors", "paper"), GameResult.USER_WIN)
 
     def test_user_loses_scenarios(self):
         """Test all scenarios where user loses."""
-        self.assertEqual(determine_winner("rock", "paper"), "You lose!")
-        self.assertEqual(determine_winner("paper", "scissors"), "You lose!")
-        self.assertEqual(determine_winner("scissors", "rock"), "You lose!")
+        self.assertEqual(determine_winner("rock", "paper"), GameResult.COMPUTER_WIN)
+        self.assertEqual(determine_winner("paper", "scissors"), GameResult.COMPUTER_WIN)
+        self.assertEqual(determine_winner("scissors", "rock"), GameResult.COMPUTER_WIN)
 
 
 class TestPlayGame(unittest.TestCase):
@@ -168,7 +169,7 @@ class TestPlayGame(unittest.TestCase):
 
         self.assertEqual(user_choice, "rock")
         self.assertEqual(computer_choice, "scissors")
-        self.assertEqual(result, "You win!")
+        self.assertEqual(result, GameResult.USER_WIN)
 
 
 class TestPlayMultipleRounds(unittest.TestCase):
